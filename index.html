@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1A2029">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CA Checklist">
+<title>CA Foundation, May 2027</title>
+<style>
+:root{--bg:#1A2029;--card:#232c38;--card2:#2b3644;--text:#e9f4fb;--muted:#9fb3c4;--ice:#7fd4ff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,#2a3646 0%,var(--bg) 55%);color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:max(24px,env(safe-area-inset-top)) 18px max(24px,env(safe-area-inset-bottom))}
+.wrap{max-width:560px;margin:0 auto}
+header{padding:18px 4px 22px}
+h1{margin:0;font-size:26px;letter-spacing:.3px}
+header p{margin:6px 0 0;color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{display:flex;flex-direction:column;gap:6px;padding:18px 16px;border-radius:18px;background:linear-gradient(160deg,var(--card2),var(--card));
+  border:1px solid rgba(127,212,255,.15);color:inherit;text-decoration:none;transition:transform .15s,border-color .15s,box-shadow .15s}
+.card:active{transform:scale(.97)}
+@media (hover:hover){.card:hover{border-color:rgba(127,212,255,.5);box-shadow:0 6px 22px rgba(127,212,255,.12)}}
+.card .ico{font-size:28px;line-height:1}
+.card b{font-size:16px}
+.card span{font-size:12.5px;color:var(--muted);line-height:1.35}
+.card.main{grid-column:1/-1;flex-direction:row;align-items:center;gap:16px;border-color:rgba(127,212,255,.4);
+  background:linear-gradient(135deg,#2f4a63,#243445)}
+.card.main .ico{font-size:38px}
+.card.main b{font-size:19px}
+footer{margin-top:26px;text-align:center;color:var(--muted);font-size:12px}
+
+/* ---------- ICE SPLASH (shows once per session) ---------- */
+#ice-splash{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+  background:radial-gradient(circle at 50% 40%,#2a3646 0%,#1A2029 60%,#10141a 100%);color:#dff4ff;transition:opacity .7s ease,visibility .7s}
+#ice-splash.hide{opacity:0;visibility:hidden}
+#ice-splash .cube-wrap{position:relative;width:160px;height:160px;animation:ice-in .9s cubic-bezier(.2,.8,.2,1) both}
+#ice-splash .half{position:absolute;inset:0;transition:transform .8s cubic-bezier(.5,0,.8,.4),opacity .8s ease}
+#ice-splash .half svg{width:100%;height:100%;overflow:visible}
+#ice-splash .left{clip-path:polygon(0 0,52% 0,44% 30%,56% 55%,46% 100%,0 100%)}
+#ice-splash .right{clip-path:polygon(52% 0,100% 0,100% 100%,46% 100%,56% 55%,44% 30%)}
+#ice-splash.break .left{transform:translate(-90px,40px) rotate(-18deg);opacity:0}
+#ice-splash.break .right{transform:translate(90px,40px) rotate(18deg);opacity:0}
+#ice-splash .crack{stroke:#fff;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:200;stroke-dashoffset:200;animation:ice-crack 1s .9s ease forwards}
+#ice-splash .shine{animation:ice-shine 2.2s ease-in-out infinite}
+#ice-splash .title{font-size:22px;font-weight:700;letter-spacing:.4px;text-align:center;animation:ice-fade .8s .3s both}
+#ice-splash .sub{font-size:13px;opacity:.7;margin-top:6px;font-weight:400;letter-spacing:1.5px;text-transform:uppercase}
+#ice-splash .bar{width:160px;height:4px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden;animation:ice-fade .8s .3s both}
+#ice-splash .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7fd4ff,#e8f9ff);animation:ice-load 2.2s .3s ease-out forwards}
+@keyframes ice-in{from{transform:scale(.4) translateY(30px);opacity:0}to{transform:none;opacity:1}}
+@keyframes ice-fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes ice-crack{to{stroke-dashoffset:0}}
+@keyframes ice-load{to{width:100%}}
+@keyframes ice-shine{0%,100%{opacity:.25}50%{opacity:.7}}
+@media (prefers-reduced-motion:reduce){#ice-splash *{animation-duration:.01s!important;animation-delay:0s!important;transition-duration:.01s!important}}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+*, *::before, *::after {
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none;
+}
+input, textarea, select, [contenteditable="true"], [contenteditable=""] {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+  -webkit-touch-callout: default;
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>CA Foundation, May 2027</h1>
+    <p>Choose where to go</p>
+  </header>
+
+  <nav class="grid">
+    <a class="card main" href="track.html">
+      <div class="ico">✅</div>
+      <div><b>Track</b><br><span>Your day-by-day checklist</span></div>
+    </a>
+    <a class="card" href="timeblocks.html"><div class="ico">⏱️</div><b>Time Blocks</b><span>Plan your study hours</span></a>
+    <a class="card" href="errorlogs.html"><div class="ico">🐞</div><b>Error Logs</b><span>Mistakes to never repeat</span></a>
+    <a class="card" href="syllabus.html"><div class="ico">📚</div><b>Syllabus</b><span>Chapters and weightage</span></a>
+    <a class="card" href="questionbanks.html"><div class="ico">❓</div><b>Question Banks</b><span>Practice questions</span></a>
+    <a class="card" href="settings.html"><div class="ico">⚙️</div><b>Settings</b><span>Preferences and data</span></a>
+  </nav>
+
+  <footer>Exam starts 3 May 2027</footer>
+</div>
+
+<div id="ice-splash" aria-hidden="true" style="display:none">
+  <div class="cube-wrap">
+    <div class="half left"><svg viewBox="0 0 160 160"><use href="#ice-cube"/></svg></div>
+    <div class="half right"><svg viewBox="0 0 160 160"><use href="#ice-cube"/></svg></div>
+    <svg viewBox="0 0 160 160" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
+      <path class="crack" d="M83 8 L70 48 L90 88 L74 152"/>
+      <path class="crack" d="M70 48 L48 62 M90 88 L116 100" style="animation-delay:1.3s"/>
+    </svg>
+  </div>
+  <div class="title">CA Foundation<div class="sub">May 2027</div></div>
+  <div class="bar"><i></i></div>
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <linearGradient id="ice-g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#e8f9ff"/><stop offset=".5" stop-color="#8fd8ff"/><stop offset="1" stop-color="#4aa8e0"/>
+      </linearGradient>
+      <g id="ice-cube">
+        <rect x="14" y="14" width="132" height="132" rx="22" fill="url(#ice-g)" fill-opacity=".85" stroke="#fff" stroke-opacity=".8" stroke-width="2"/>
+        <rect x="26" y="26" width="108" height="108" rx="14" fill="none" stroke="#fff" stroke-opacity=".35"/>
+        <path d="M30 40 Q30 30 42 30 L70 30" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none" opacity=".9"/>
+        <ellipse class="shine" cx="110" cy="115" rx="22" ry="8" fill="#fff" transform="rotate(-35 110 115)"/>
+      </g>
+    </defs>
+  </svg>
+</div>
+
+<script>
+(function(){
+  var s=document.getElementById('ice-splash');
+  var seen=false;
+  try{seen=sessionStorage.getItem('iceSplashSeen')==='1'}catch(e){}
+  if(seen){s.remove();return}
+  try{sessionStorage.setItem('iceSplashSeen','1')}catch(e){}
+  s.style.display='flex';
+  document.documentElement.style.overflow='hidden';
+  setTimeout(function(){s.classList.add('break')},2100);
+  setTimeout(function(){s.classList.add('hide');document.documentElement.style.overflow=''},2700);
+  setTimeout(function(){s.remove()},3600);
+})();
+</script>
+<script>
+// Saves the whole app on this device the first time it is opened online, so it works offline afterwards.
+if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){window.addEventListener("load",function(){try{navigator.serviceWorker.register("sw.js").catch(function(){});}catch(e){}});}
+</script>
+</body>
+</html>
