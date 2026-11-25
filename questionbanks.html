@@ -2,32 +2,43 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1A2029">
-<title>Question Banks | CA Foundation</title>
-<style>
-body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
-background:#1A2029;color:#e9f4fb;font-family:system-ui,-apple-system,sans-serif;text-align:center;padding:24px}
-.i{font-size:56px}h1{margin:0}p{color:#9fb3c4;margin:0}
-a{margin-top:18px;padding:12px 22px;border-radius:12px;background:#2f4a63;color:#e9f4fb;text-decoration:none;font-weight:600}
-</style><link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" href="icon-192.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<style>
-*, *::before, *::after {
-  -webkit-user-select: none !important;
-  user-select: none !important;
-  -webkit-touch-callout: none;
-}
-input, textarea, select, [contenteditable="true"], [contenteditable=""] {
-  -webkit-user-select: text !important;
-  user-select: text !important;
-  -webkit-touch-callout: default;
-}
-</style>
+<title>Settings | CA Foundation</title>
 </head><body>
-<div class="i">❓</div><h1>Question Banks</h1><p>Coming soon. Replace this file with the real page.</p>
-<a href="index.html">&larr; Back to Home</a>
+<div id="cat-topbar"></div>
+<main class="wrap">
+  <h1>Settings</h1>
+  <p class="sub">Your profile, app usage and device details.</p>
+  <h2>Profile</h2><div class="panel" id="profile-card"></div>
+  <h2>Usage</h2><div class="panel" id="usage-card"></div>
+  <h2>About</h2><div class="panel" id="about-card"></div>
+</main>
+
+<script src="js/core.js"></script>
 <script>
-// Saves the whole app on this device the first time it is opened online, so it works offline afterwards.
-if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){window.addEventListener("load",function(){try{navigator.serviceWorker.register("sw.js").catch(function(){});}catch(e){}});}
+(function () {
+  var el = CAT.el;
+  function row(key, value, extra) {
+    var v = el("span", { class: "v" }, [el("span", { text: value })]);
+    if (extra) v.append(extra);
+    return el("div", { class: "kv" }, [el("span", { class: "k", text: key }), v]);
+  }
+  function render(p) {
+    var pc = document.getElementById("profile-card"), uc = document.getElementById("usage-card"), ac = document.getElementById("about-card");
+    pc.replaceChildren(); uc.replaceChildren(); ac.replaceChildren();
+    if (!p) return;
+    pc.append(row("Username", p.name, el("button", { class: "btn ghost small", text: "Edit", onclick: CAT.renameActive })));
+    pc.append(row("Profiles on this device", String(CAT.profiles.all().length), el("button", { class: "btn ghost small", text: "Add", onclick: CAT.addProfile })));
+    uc.append(row("Time in app", CAT.formatDuration(p.usageSec)));
+    uc.append(row("Using since", new Date(p.created).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })));
+    uc.append(row("Days using the app", String(Math.max(1, Math.ceil((Date.now() - p.created) / 86400000)))));
+    var d = CAT.deviceInfo();
+    ac.append(row("App name", CAT.app.name));
+    ac.append(row("Version", CAT.app.version));
+    ac.append(row("Device", d.name));
+    ac.append(row("Browser", d.browser));
+  }
+  CAT.onChange(render);
+  setInterval(function () { render(CAT.profiles.active()); }, 10000);
+})();
 </script>
 </body></html>
