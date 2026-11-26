@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1A2029">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <title>Settings | CA Foundation</title>
+  <style>
+    .profile-card{display:flex;align-items:center;gap:16px;padding:16px;border-radius:16px;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line)}
+    .profile-card .info{flex:1;min-width:0}
+    .profile-card .pname{font-size:20px;font-weight:700;overflow:hidden;text-overflow:ellipsis}
+    .profile-card .puser{color:var(--muted);font-size:14px}
+    .stack{display:grid;gap:10px;padding:14px 0}
+    .stack input{width:100%;font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+    .msg{min-height:1.2em;font-size:13px;margin:0}
+    .msg.bad{color:var(--bad)} .msg.good{color:var(--good)}
+    details summary{cursor:pointer;padding:13px 0;font-weight:600}
+  </style>
+</head>
+<body>
+  <div id="cat-topbar"></div>
+  <main class="wrap">
+    <h1>Settings</h1>
+    <p class="sub">Your profile, account and data.</p>
+
+    <h2>Profile</h2>
+    <div class="profile-card">
+      <div id="avatar-slot"></div>
+      <div class="info">
+        <div class="pname" id="pname"></div>
+        <div class="puser" id="puser"></div>
+      </div>
+      <button class="btn" id="edit-profile" type="button">Edit</button>
+    </div>
+
+    <h2 id="acc-h">Account</h2>
+    <div class="panel" id="acc-panel">
+      <div class="kv"><span class="k">Username</span><span class="v" id="acc-user"></span></div>
+      <div class="kv"><span class="k">Sync</span><span class="v"><span class="sync-dot" id="sync-dot"></span><span id="sync-text"></span></span></div>
+      <div class="kv"><span class="k">Save to account now</span><span class="v"><button class="btn small" id="sync-now" type="button">Sync now</button></span></div>
+      <details>
+        <summary>Change password</summary>
+        <div class="stack">
+          <input id="pw-old" type="password" placeholder="Current password" autocomplete="current-password">
+          <input id="pw-new" type="password" placeholder="New password (8+ characters)" autocomplete="new-password">
+          <input id="pw-new2" type="password" placeholder="Repeat new password" autocomplete="new-password">
+          <p class="msg" id="pw-msg" aria-live="polite"></p>
+          <button class="btn" id="pw-save" type="button">Change password</button>
+        </div>
+      </details>
+      <div class="kv"><span class="k">This device</span><span class="v"><button class="btn danger small" id="logout" type="button">Log out</button></span></div>
+    </div>
+
+    <h2>Backup file</h2>
+    <div class="panel">
+      <div class="kv"><span class="k">Download a copy of everything (ticks, time blocks, errors, attached files)</span><span class="v"><button class="btn small" id="export" type="button">Export</button></span></div>
+      <div class="kv"><span class="k">Restore from a backup</span><span class="v"><button class="btn ghost small" id="import" type="button">Import</button><input id="import-file" type="file" accept="application/json,.json" style="display:none"></span></div>
+    </div>
+    <p class="sub" id="data-msg" style="margin-top:8px"></p>
+
+    <h2>About</h2>
+    <div class="panel">
+      <div class="kv"><span class="k">App</span><span class="v" id="about-app"></span></div>
+      <div class="kv"><span class="k">Device</span><span class="v" id="about-device"></span></div>
+      <div class="kv"><span class="k">Browser</span><span class="v" id="about-browser"></span></div>
+      <div class="kv"><span class="k">First opened</span><span class="v" id="about-first"></span></div>
+      <div class="kv"><span class="k">Time in app (all devices)</span><span class="v" id="about-usage"></span></div>
+    </div>
+    <p class="sub" style="margin-top:10px;font-size:12.5px">Browsers don't reveal a device's custom name, so the model and system are shown instead.</p>
+  </main>
+
+  <script src="js/core.js"></script>
+  <script>
+    (function () {
+      var $ = function (id) { return document.getElementById(id); };
+
+      CAT.onChange(function (p) {
+        if (!p) return;
+        $("avatar-slot").replaceChildren(CAT.avatar(p, true));
+        $("pname").textContent = p.name;
+        $("puser").textContent = CAT.localOnly ? "Saved on this device" : "@" + p.username;
+        $("acc-user").textContent = p.username;
+        $("about-first").textContent = p.created ? new Date(p.created).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) : "-";
+        $("about-usage").textContent = CAT.formatDuration(p.usageSec);
+      });
+      setInterval(function () { var p = CAT.profiles.active(); if (p) $("about-usage").textContent = CAT.formatDuration(p.usageSec); }, 5000);
+
+      if (CAT.localOnly) { $("acc-h").hidden = true; $("acc-panel").hidden = true; }
+
+      var d = CAT.deviceInfo();
+      $("about-app").textContent = CAT.app.name + " v" + CAT.app.version;
+      $("about-device").textContent = d.name;
+      $("about-browser").textContent = d.browser;
+
+      $("edit-profile").addEventListener("click", CAT.editProfile);
+
+      CAT.sync.onState(function (s) {
+        $("sync-dot").className = "sync-dot " + s;
+        $("sync-text").textContent = CAT.sync.text(s);
+      });
+      $("sync-now").addEventListener("click", function () {
+        var b = $("sync-now"); b.disabled = true; b.textContent = "Syncing…";
+        CAT.sync.now().then(function (r) {
+          b.disabled = false; b.textContent = "Sync now";
+          CAT.toast(r.ok ? "Saved to your account." : (r.offline ? "You are offline. It will sync later." : "Could not sync. Will retry."));
+        });
+      });
+
+      $("logout").addEventListener("click", CAT.account.logout);
+
+      $("pw-save").addEventListener("click", function () {
+        var msg = $("pw-msg"), o = $("pw-old").value, n = $("pw-new").value;
+        msg.className = "msg bad";
+        if (n.length < 8) { msg.textContent = "New password must be at least 8 characters."; return; }
+        if (n !== $("pw-new2").value) { msg.textContent = "The new passwords do not match."; return; }
+        CAT.account.changePassword(o, n).then(function () {
+          msg.className = "msg good"; msg.textContent = "Password changed. Other devices were logged out.";
+          $("pw-old").value = $("pw-new").value = $("pw-new2").value = "";
+        }, function (e) { msg.textContent = (e && e.message) || "Failed."; });
+      });
+
+      $("export").addEventListener("click", function () {
+        var b = this; b.disabled = true; b.textContent = "Preparing...";
+        CAT.data.exportFile().then(function (r) {
+          $("data-msg").textContent = "Backup saved: " + r.keys + " items and " + r.files + " attached file(s).";
+        }, function () { $("data-msg").textContent = "Export failed."; }).then(function () { b.disabled = false; b.textContent = "Export"; });
+      });
+      $("import").addEventListener("click", function () { $("import-file").click(); });
+      $("import-file").addEventListener("change", function () {
+        var f = this.files && this.files[0]; if (!f) return;
+        if (!confirm("Restore this backup? It will replace matching data on this device.")) return;
+        CAT.data.importFile(f).catch(function (e) { $("data-msg").textContent = "Import failed: " + (e && e.message || "invalid file"); });
+      });
+    })();
+  </script>
+</body>
+</html>

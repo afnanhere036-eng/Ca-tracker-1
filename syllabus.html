@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1A2029">
+<title>Syllabus | CA Foundation</title>
+<style>
+:root{color-scheme:dark;--bg:#1A2029;--card:#232c38;--card2:#2b3644;--text:#e9f4fb;--muted:#9fb3c4;--ice:#7fd4ff;--line:rgba(127,212,255,.16);--p1:#6B9BF0;--p2:#E8A24A;--p3:#EE6B7B;--p4:#5CC593}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,#2a3646 0%,var(--bg) 55%);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;padding:max(18px,env(safe-area-inset-top)) 14px max(28px,env(safe-area-inset-bottom))}
+.wrap{max-width:640px;margin:0 auto}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+h1{margin:0;font-size:24px;letter-spacing:.2px}
+.home{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:12px;background:#ffffff12;color:#dbe9f4;text-decoration:none;font-size:13px;font-weight:650;white-space:nowrap}
+.lead{margin:6px 0 14px;color:var(--muted);font-size:13.5px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.stat{padding:10px 8px;text-align:center;border-radius:14px;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line)}
+.stat b{display:block;font-size:20px}.stat span{font-size:11.5px;color:var(--muted)}
+.tools{display:flex;gap:8px;margin-bottom:14px;position:sticky;top:max(6px,env(safe-area-inset-top));z-index:5}
+.tools input{flex:1;min-width:0;height:44px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:#141a22;color:var(--text);font:inherit;outline:none}
+.tools input:focus{border-color:var(--ice)}
+.tools button{height:44px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--card2);color:var(--text);font:inherit;font-size:13px;font-weight:650;cursor:pointer}
+.paper{margin:0 0 12px;border-radius:18px;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-left:5px solid var(--pc);overflow:hidden}
+.paper>summary{list-style:none;display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer}
+.paper>summary::-webkit-details-marker{display:none}
+.num{flex:0 0 38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:800;color:#10161f;background:var(--pc)}
+.ptitle{flex:1;min-width:0}.ptitle b{display:block;font-size:16.5px;line-height:1.25}.ptitle span{font-size:12.5px;color:var(--muted)}
+.marks{font-weight:750;font-size:13px;color:var(--pc);white-space:nowrap}
+.chev{color:var(--muted);transition:transform .2s}
+details[open]>summary .chev{transform:rotate(90deg)}
+.pbody{padding:0 12px 12px}
+.part{margin:10px 2px 6px;font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--pc);font-weight:750}
+.note{margin:4px 2px 10px;color:var(--muted);font-size:12.5px}
+.ch{margin:0 0 8px;border-radius:12px;background:#141a22;border:1px solid rgba(255,255,255,.06)}
+.ch>summary{list-style:none;display:flex;gap:10px;align-items:flex-start;padding:11px 12px;cursor:pointer}
+.ch>summary::-webkit-details-marker{display:none}
+.cn{flex:0 0 auto;min-width:26px;color:var(--pc);font-weight:800;font-variant-numeric:tabular-nums}
+.ct{flex:1;min-width:0;font-weight:620;line-height:1.35}
+.wt{flex:0 0 auto;font-size:11.5px;color:var(--muted);padding:2px 8px;border-radius:99px;background:#ffffff10;white-space:nowrap}
+.ch ul{margin:0;padding:0 14px 12px 50px;color:#c9d9e6;font-size:13.5px}
+.ch li{margin:3px 0}
+.empty{display:none;text-align:center;color:var(--muted);padding:26px 0}
+.src{margin-top:18px;padding:12px 14px;border-radius:14px;background:#ffffff0a;color:var(--muted);font-size:12px}
+.src a{color:var(--ice)}
+mark{background:#7fd4ff33;color:inherit;border-radius:3px}
+@media(max-width:380px){h1{font-size:21px}.wt{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="cat-topbar"></div>
+  <div class="top"><h1>Syllabus</h1></div>
+  <p class="lead">ICAI CA Foundation (new scheme) &middot; 4 papers &middot; 400 marks</p>
+  <div class="stats">
+    <div class="stat"><b>4</b><span>Papers</span></div>
+    <div class="stat"><b id="chCount">0</b><span>Chapters</span></div>
+    <div class="stat"><b>400</b><span>Marks</span></div>
+  </div>
+  <div class="tools">
+    <input id="q" type="search" placeholder="Search chapters or topics" aria-label="Search syllabus" autocomplete="off">
+    <button id="toggle" type="button">Expand all</button>
+  </div>
+  <div id="list"></div>
+  <div class="empty" id="empty">No chapters match your search.</div>
+  <div class="src">Compiled from public summaries of the ICAI new-scheme Foundation syllabus (<a href="https://finance.careers360.com/articles/ca-foundation-syllabus" target="_blank" rel="noopener">Careers360</a>, <a href="https://www.pw.live/exams/ca/ca-foundation-syllabus/" target="_blank" rel="noopener">PW</a>, <a href="https://www.taxscan.in/icai-new-scheme-know-the-new-ca-foundation-syllabus-and-section-wise-weightage-here/367402" target="_blank" rel="noopener">Taxscan</a>). Weightages are approximate and can vary by up to 5%. Business Correspondence &amp; Reporting and Business &amp; Commercial Knowledge belonged to the older scheme. Always confirm the latest syllabus on <a href="https://www.icai.org" target="_blank" rel="noopener">icai.org</a>.</div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var PAPERS=[
+    {n:1,name:"Accounting",marks:"100 marks",color:"var(--p1)",
+     note:"Approx. weightage: Theoretical Framework 5–10%, Accounting Process (ch. 2–6) 30–35%, Final Accounts incl. NPO and incomplete records (ch. 7–9) 20–25%, Partnership & LLP 15–20%, Company Accounts 15–25%.",
+     parts:[{title:"",chapters:[
+      ["Theoretical Framework",["Meaning and scope of accounting","Accounting concepts, principles and conventions","Capital and revenue items; contingent assets and liabilities","Accounting policies and accounting as a measurement discipline","Accounting Standards and Indian Accounting Standards (concept and objectives)"]],
+      ["Accounting Process",["Books of account and double-entry recording","Trial balance","Rectification of errors"]],
+      ["Bank Reconciliation Statement",["Reasons for differences between cash book and pass book","Preparation of the statement"]],
+      ["Inventories",["Meaning, cost and net realisable value","Valuation bases and techniques","Inventory record systems"]],
+      ["Depreciation and Amortisation",["Tangible and intangible assets","Methods of computing depreciation","Accounting treatment and change of method"]],
+      ["Bills of Exchange and Promissory Notes",["Features, parties and types","Accounting for acceptance, discounting, endorsement and dishonour","Renewal and retirement of bills"]],
+      ["Final Accounts of Sole Proprietors",["Elements of financial statements","Closing entries","Trading, profit and loss account and balance sheet","Manufacturing and non-manufacturing entities"]],
+      ["Financial Statements of Not-for-Profit Organisations",["Receipts and payments account","Income and expenditure account","Balance sheet","Difference from a profit and loss account"]],
+      ["Accounts from Incomplete Records",["Single-entry and statement-of-affairs method","Preparing final accounts from incomplete records"]],
+      ["Partnership and LLP Accounts",["Final accounts of partnerships and LLPs","Admission, retirement and death of a partner (incl. goodwill)","Dissolution, incl. piecemeal distribution"]],
+      ["Company Accounts",["Issue of shares and debentures","Forfeiture and re-issue of forfeited shares","Redemption of preference shares and debentures","Bonus and rights issues"]]
+     ]}]},
+    {n:2,name:"Business Laws",marks:"100 marks",color:"var(--p2)",
+     note:"Approx. weightage shown against each chapter.",
+     parts:[{title:"",chapters:[
+      ["Indian Regulatory Framework",["Major regulators: Ministry of Finance, Ministry of Corporate Affairs, SEBI, RBI, IBBI, Ministry of Law and Justice"],"0–5%"],
+      ["The Indian Contract Act, 1872",["Nature of contracts and essentials of a valid contract","Consideration","Performance and breach","Contingent and quasi contracts","Indemnity and guarantee","Bailment and pledge","Agency"],"20–30%"],
+      ["The Sale of Goods Act, 1930",["Formation of a contract of sale","Conditions and warranties","Transfer of ownership and delivery","Rights of an unpaid seller"],"15–20%"],
+      ["The Indian Partnership Act, 1932",["Nature of partnership","Rights and duties of partners","Reconstitution","Registration and dissolution"],"15–20%"],
+      ["The Limited Liability Partnership Act, 2008",["Nature and scope; essential features","Incorporation","Differences from other forms of organisation"],"5–10%"],
+      ["The Companies Act, 2013",["Essential features and corporate veil","Classes of companies and types of share capital","Incorporation","Memorandum and Articles of Association","Doctrine of indoor management"],"15–20%"],
+      ["The Negotiable Instruments Act, 1881",["Meaning and characteristics; classification","Negotiation and presentment","Dishonour and compensation rules"],"10–15%"]
+     ]}]},
+    {n:3,name:"Quantitative Aptitude",marks:"100 marks",color:"var(--p3)",
+     note:"Part A: Business Mathematics (40) · Part B: Logical Reasoning (20) · Part C: Statistics (40).",
+     parts:[
+      {title:"Part A · Business Mathematics · 40 marks",chapters:[
+       ["Ratio and Proportion, Indices, Logarithms",["Ratio and proportion; time and work","Laws of indices","Exponents, logarithms and antilogarithms"]],
+       ["Equations",["Linear equations (up to three variables)","Quadratic and cubic equations in one variable","Business applications"]],
+       ["Linear Inequalities",["One and two variables","Solution space"]],
+       ["Mathematics of Finance",["Simple and compound interest; nominal and effective rates","Present, net present and future value","Perpetuity, annuities, sinking funds, EMI","CAGR and returns"]],
+       ["Basic Concepts of Permutations and Combinations",["Factorial","Permutations (incl. circular and restricted)","Combinations and standard results"]],
+       ["Sequence and Series (AP and GP)",["Arithmetic and geometric progressions","AM–GM relationship","Business applications"]],
+       ["Sets, Relations and Functions; Limits and Continuity (basics)",["Sets and set operations","Relations and functions","Basic limits and continuity"]],
+       ["Basic Applications of Differential and Integral Calculus",["Applications in business and economics","Trigonometric applications are excluded"]]]},
+      {title:"Part B · Logical Reasoning · 20 marks",chapters:[
+       ["Number Series, Coding and Decoding, Odd Man Out",["Number series","Coding and decoding","Odd man out"]],
+       ["Direction Tests",["Direction and distance problems"]],
+       ["Seating Arrangements",["Linear and circular arrangements"]],
+       ["Blood Relations",["Family relationship problems"]]]},
+      {title:"Part C · Statistics · 40 marks",chapters:[
+       ["Statistical Representation of Data; Sampling",["Diagrams, frequency distributions, histogram, frequency polygon, ogive, pie chart","Sampling theory; sample survey vs complete enumeration","Types of sampling; sampling and non-sampling errors"]],
+       ["Measures of Central Tendency and Dispersion",["Mean, median, mode","Mean deviation, quartiles, quartile deviation","Standard deviation; coefficients of variation and quartile deviation"]],
+       ["Probability",["Independent, dependent and mutually exclusive events","Total and compound probability","Bayes' theorem"]],
+       ["Theoretical Distributions",["Random variables (discrete and continuous); expectation","Binomial, Poisson and normal distributions (basic applications)"]],
+       ["Correlation and Regression",["Scatter diagrams","Karl Pearson's and rank correlation","Regression lines, equations and coefficients"]],
+       ["Index Numbers",["Uses and construction methods","Construction problems","Examples such as BSE SENSEX and NSE indices"]]]}
+     ]},
+    {n:4,name:"Business Economics",marks:"100 marks",color:"var(--p4)",
+     note:"Approx. weightage shown against each chapter.",
+     parts:[{title:"",chapters:[
+      ["Nature and Scope of Business Economics",["Meaning and scope","Basic economic problems","Role of the price mechanism"],"5%"],
+      ["Theory of Demand and Supply",["Determinants and law of demand","Price, income and cross elasticity","Indifference curve approach","Supply determinants, law and elasticity","Market equilibrium and social efficiency"],"10%"],
+      ["Theory of Production and Cost",["Factors of production; short run and long run","Law of variable proportions; returns to scale","Producer's equilibrium","Short- and long-run costs: total, average, marginal, fixed and variable"],"10%"],
+      ["Price Determination in Different Markets",["Perfect competition, monopoly, monopolistic competition","Game theory for oligopoly","Price and output determination"],"15%"],
+      ["Business Cycles",["Meaning and features","Phases","Causes"],"5%"],
+      ["Determination of National Income",["Macroeconomic aggregates and their measurement","Keynes' two-, three- and four-sector models"],"15%"],
+      ["Public Finance",["Fiscal functions; Centre and State finance","Market failure and government intervention","Budget process, revenue, expenditure and public debt","Fiscal policy"],"10%"],
+      ["Money Market",["Demand for money and its theories","Money supply","Cryptocurrency","Monetary policy"],"10%"],
+      ["International Trade",["Trade theories incl. intra-industry trade (Krugman)","Trade policy instruments and negotiations","Exchange rates and their effects","International capital movements incl. FDI"],"10%"],
+      ["Indian Economy",["Pre-1950 period","1950–1991 period","Post-1991 reforms (basics)"],"10%"]
+     ]}]}
+  ];
+
+  var list=document.getElementById("list"),qEl=document.getElementById("q"),toggle=document.getElementById("toggle"),empty=document.getElementById("empty");
+  function esc(s){var d=document.createElement("span");d.textContent=s;return d.innerHTML;}
+  function hl(s,q){var t=esc(s);if(!q)return t;var re=new RegExp("("+q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","ig");return t.replace(re,"<mark>$1</mark>");}
+
+  var total=0;PAPERS.forEach(function(p){p.parts.forEach(function(pt){total+=pt.chapters.length;});});
+  document.getElementById("chCount").textContent=total;
+
+  var openAll=false;
+  function render(){
+    var q=qEl.value.trim().toLowerCase(),html="",shown=0;
+    PAPERS.forEach(function(p){
+      var counter=0,body="",matches=0;
+      p.parts.forEach(function(pt){
+        var partHtml="",partMatches=0;
+        pt.chapters.forEach(function(c){
+          counter++;
+          var hay=(c[0]+" "+c[1].join(" ")).toLowerCase();
+          if(q&&hay.indexOf(q)===-1)return;
+          partMatches++;
+          partHtml+='<details class="ch"'+((q||openAll)?" open":"")+'><summary><span class="cn">'+counter+'</span><span class="ct">'+hl(c[0],q)+'</span>'+(c[2]?'<span class="wt">'+c[2]+'</span>':'')+'</summary><ul>'+c[1].map(function(t){return "<li>"+hl(t,q)+"</li>";}).join("")+'</ul></details>';
+        });
+        if(partMatches){matches+=partMatches;if(pt.title)body+='<div class="part">'+esc(pt.title)+'</div>';body+=partHtml;}
+      });
+      if(q&&!matches)return;
+      shown+=matches||0;
+      html+='<details class="paper" style="--pc:'+p.color+'"'+((q||openAll)?" open":"")+'><summary><span class="num">'+p.n+'</span><span class="ptitle"><b>'+esc(p.name)+'</b><span>'+counter+' chapters</span></span><span class="marks">'+p.marks+'</span><span class="chev">&#9656;</span></summary><div class="pbody">'+(q?"":'<p class="note">'+esc(p.note)+'</p>')+body+'</div></details>';
+    });
+    list.innerHTML=html;empty.style.display=(q&&!shown)?"block":"none";
+  }
+  qEl.addEventListener("input",render);
+  toggle.addEventListener("click",function(){
+    openAll=!openAll;toggle.textContent=openAll?"Collapse all":"Expand all";
+    Array.prototype.forEach.call(list.querySelectorAll("details"),function(d){d.open=openAll;});
+  });
+  render();
+})();
+</script>
+<script src="js/core.js"></script>
+</body>
+</html>
