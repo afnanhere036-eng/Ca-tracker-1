@@ -57,8 +57,8 @@
 
     <h2>Backup file</h2>
     <div class="panel">
-      <div class="kv"><span class="k">Download a copy of everything</span><span class="v"><button class="btn small" id="export" type="button">Export</button></span></div>
-      <div class="kv"><span class="k">Restore from a backup</span><span class="v"><button class="btn ghost small" id="import" type="button">Import</button><input id="import-file" type="file" accept="application/json,.json" style="display:none"></span></div>
+      <div class="kv"><span class="k">Download a copy</span><span class="v"><button class="btn ghost small" id="export" type="button">Export</button></span></div>
+      <div class="kv"><span class="k">Restore from backup</span><span class="v"><button class="btn ghost small" id="import" type="button">Import</button><input id="import-file" type="file" accept="application/json,.json" style="display:none"></span></div>
     </div>
     <p class="sub" id="data-msg" style="margin-top:8px"></p>
 
@@ -126,7 +126,7 @@
       $("export").addEventListener("click", function () {
         var b = this; b.disabled = true; b.textContent = "Preparing...";
         CAT.data.exportFile().then(function (r) {
-          $("data-msg").textContent = "Backup saved: " + r.keys + " items and " + r.files + " attached file(s).";
+          $("data-msg").textContent = "Backup saved.";
         }, function () { $("data-msg").textContent = "Export failed."; }).then(function () { b.disabled = false; b.textContent = "Export"; });
       });
       $("import").addEventListener("click", function () { $("import-file").click(); });
